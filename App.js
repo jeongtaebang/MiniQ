@@ -10,105 +10,72 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  FlatList,
+  Dimensions
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const blocks = [
+  { key: 'B1' }, { key: 'B2' }, { key: 'B3' }, { key: 'B4' }, { key: 'B5' }, { key: 'B6' }, 
+  { key: 'B7' }, { key: 'B8' }, { key: 'B9' },
+]
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                MiniQ Project
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+
+/*
+ * Adapted from snack.expo.io@spencercarli/react-native-flatlist-grid
+*/
+const formatData = (data, numCol) => {
+  return data
 };
 
+
+const numCol = 3;
+export default class App extends React.Component {
+
+  renderItem = ({item, idx}) => {
+    if (item.empty === true) {
+      return <View style={[styles.item, styles.itemInvisible]} />
+    }
+    return (
+      <View style={styles.item}>
+        <Text style={styles.itemText}> {item.key} </Text>
+      </View>
+    );
+  };
+
+
+  render() {
+    return (
+      <FlatList 
+        data={formatData(blocks, numCol)}
+        style={styles.container}
+        renderItem={this.renderItem}
+        numColumns={numCol}
+      />
+    );
+  }
+}
+
+
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    marginVertical: 33,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  item: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
   },
-  body: {
-    backgroundColor: Colors.white,
+  itemInvisible: {
+    backgroundColor: 'transparent',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  itemText: {
+    color: '#fff',
   },
 });
-
-export default App;
