@@ -36,6 +36,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       wordList: [],
+      output: "",
     };
 
     this.recordMove = this.recordMove.bind(this);
@@ -173,9 +174,16 @@ export default class App extends React.Component {
             })
               .then((responseJson) => {
                 console.log(responseJson);
-                this.setState({
-                  wordList: responseJson['words'],
-                });
+                const flag = responseJson['is_sentence'];
+                if (flag) {
+                  this.setState({
+                    output: responseJson['words'][0],
+                  });
+                } else {
+                  this.setState({
+                    wordList: responseJson['words'],
+                  });
+                }
               })
               .catch((err) => {
                 console.log(err);
@@ -187,19 +195,20 @@ export default class App extends React.Component {
             });
   }
 
-  renderWords = (words) => {
-    let str = "";
-    words.map( (word, idx) => {
-        str = str + " " + word;
+
+  selectionHandler = (word, oldOut) => {
+    const newOutput = oldOut + ' ' + word;
+    this.setState({
+      wordList: [],
+      output: newOutput,
     });
-    
-    return str;
-  };
+  }
 
 
   render() {
     const data = blocks;
     const wordList = this.state.wordList;
+    const output = this.state.output;
     return (
       <>
         <View
@@ -251,9 +260,30 @@ export default class App extends React.Component {
         </View>
 
         <View>
-          {/* Words */}
-          <View style={styles.results} >
-            <Text sytle={styles.itemText}> {wordList.length == 0 ? '...' : this.renderWords(wordList)} </Text>
+          {/* Words  Selection*/}
+          <View style={styles.selection1} >
+            <Text
+              style={styles.itemText}
+              onPress={() => this.selectionHandler(wordList[0], output)}
+            > {wordList.length === 0 ? '' : wordList[0]} </Text>
+          </View>
+          <View style={styles.selection2} >
+            <Text sytle={styles.itemText}
+              onPress={() => this.selectionHandler(wordList[1], output)}
+            > {wordList.length <= 1 ? '' : wordList[1]} </Text>
+          </View>
+          <View style={styles.selection3} >
+            <Text
+              style={styles.itemText}
+              onPress={() => this.selectionHandler(wordList[2], output)}
+            > {wordList.length <= 2 ? '' : wordList[2]} </Text>
+          </View>
+        </View>
+
+        <View>
+          {/* Final Output*/}
+          <View style={styles.output} >
+            <Text sytle={styles.itemText}> {wordList === '' ? '' : output} </Text>
           </View>
         </View>
       </>
@@ -391,8 +421,8 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
 
-  results: {
-    width: Dimensions.get('window').width,
+  selection1: {
+    width:h,
     height: 50,
     backgroundColor: 'lime',
     alignItems: 'center',
@@ -402,11 +432,46 @@ const styles = StyleSheet.create({
     left: 0,
     margin: 3,
   },
+  selection2: {
+    width:h,
+    height: 50,
+    backgroundColor: 'yellow',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 4 * h,
+    left: 0 + h,
+    margin: 3,
+  },
+  selection3: {
+    width:h,
+    height: 50,
+    backgroundColor: 'purple',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 4 * h,
+    left: 0 + 2*h,
+    margin: 3,
+  },
+
+  output: {
+    width: Dimensions.get('window').width / 2,
+    height: 50,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 5 * h,
+    left: 0,
+    marginVertical: 10,
+    marginLeft: 3,
+  },
 
   itemInvisible: {
     backgroundColor: 'transparent',
   },
   itemText: {
-    color: '#fff',
+    color: 'white',
   },
 });
