@@ -10,105 +10,243 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  FlatList,
+  Dimensions
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const blocks = [
+  { key: 'QWER' }, { key: 'TYUI' }, { key: 'OP' }, { key: 'AS' }, { key: 'DFG' }, { key: 'HJKL' }, 
+  { key: 'ZXC' }, { key: 'VB' }, { key: 'NM' },
+]
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                MiniQ Project
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+
+/*
+ * Adapted from snack.expo.io@spencercarli/react-native-flatlist-grid
+*/
+const formatData = (data, numCol) => {
+  return data
 };
 
+
+const numCol = 3;
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      wordList: [],
+      blockList: [],
+    };
+  }
+
+  renderWords = (words) => {
+    let str = "";
+    words.map( (word, idx) => {
+      str = str + " " + word;
+    });
+
+    return str;
+  };
+
+
+  render() {
+    const data = blocks;
+    const wordList = this.state.wordList;
+    return (
+      <View>
+        {/*<FlatList 
+           data={formatData(blocks, numCol)}
+           style={styles.container}
+           renderItem={this.renderItem}
+           numColumns={numCol}
+        />*/}
+        {/* Blocks 1-3 */}
+        <View style={styles.item1} >
+          <Text style={styles.itemText}> {data[0].key}</Text>
+        </View>
+        <View style={styles.item2} >
+          <Text style={styles.itemText}> {data[1].key} </Text>
+        </View>
+        <View style={styles.item3} >
+          <Text style={styles.itemText}> {data[2].key} </Text>
+        </View>
+
+        {/* Blocks 4-6 */}
+        <View style={styles.item4} >
+          <Text style={styles.itemText}> {data[3].key}</Text>
+        </View>
+        <View style={styles.item5} >
+          <Text style={styles.itemText}> {data[4].key} </Text>
+        </View>
+        <View style={styles.item6} >
+          <Text style={styles.itemText}> {data[5].key} </Text>
+        </View>
+        
+        {/* Blocks 7-9 */}
+        <View style={styles.item7} >
+          <Text style={styles.itemText}> {data[6].key}</Text>
+        </View>
+        <View style={styles.item8} >
+          <Text style={styles.itemText}> {data[7].key} </Text>
+        </View>
+        <View style={styles.item9} >
+          <Text style={styles.itemText}> {data[8].key} </Text>
+        </View>
+
+        {/* Space */}
+        <View style={styles.space} >
+          <Text style={styles.itemText}> SPACE </Text>
+        </View>
+
+        {/* Words */}
+        <View style={styles.results} >
+          <Text sytle={styles.itemText}> {wordList.length == 0 ? '...' : this.renderWords()} </Text>
+        </View>
+      </View>
+    );
+  }
+}
+
+
+const vertOffset = 20;
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    marginVertical: 33,
   },
-  engine: {
+
+  item1: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
-    right: 0,
+    top: 0 + vertOffset,
+    left: 0,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  body: {
-    backgroundColor: Colors.white,
+  item2: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0 + vertOffset,
+    left: Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  item3: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0 + vertOffset,
+    left: 2 * Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+
+  item4: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + Dimensions.get('window').width / numCol + 2,
+    left: 0,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  item5: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + Dimensions.get('window').width / numCol + 2,
+    left: Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  highlight: {
-    fontWeight: '700',
+  item6: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + Dimensions.get('window').width / numCol + 2,
+    left: 2 * Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+
+  item7: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 2 * Dimensions.get('window').width / numCol + 4,
+    left: 0,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
+  },
+  item8: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 2 * Dimensions.get('window').width / numCol + 4,
+    left: Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
+  },
+  item9: {
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 2 * Dimensions.get('window').width / numCol + 4,
+    left: 2 * Dimensions.get('window').width / numCol,
+    margin: 1,
+    height: Dimensions.get('window').width / numCol,
+    width: Dimensions.get('window').width / numCol - 2,
+  },
+
+  space: {
+    width: Dimensions.get('window').width,
+    height: 50,
+    backgroundColor: 'skyblue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 3 * Dimensions.get('window').width / numCol + 6,
+    left: 0,
+    margin: 1,
+  },
+
+  results: {
+    width: Dimensions.get('window').width,
+    height: 50,
+    backgroundColor: 'lime',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: vertOffset + 4 * Dimensions.get('window').width / numCol + 8,
+    left: 0,
+    margin: 3,
+  },
+
+  itemInvisible: {
+    backgroundColor: 'transparent',
+  },
+  itemText: {
+    color: '#fff',
   },
 });
-
-export default App;
