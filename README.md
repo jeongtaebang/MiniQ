@@ -9,6 +9,6 @@
 
 
 
-Jeong Tae Bang
-Sung Jun Park
-Nov 2019
+Jeong Tae Bang  
+Sung Jun Park  
+Nov 2019  
