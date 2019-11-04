@@ -26,10 +26,11 @@ const blocks = [
 const vertOffset = 20;
 const numCol = 3;
 const spaceH = 50;
-const THRESH = 700;
+const THRESH = 500;
 const h = Dimensions.get('window').width / 2 / numCol;
 var coords = [];
-const FLASKURL = "https://swipemini.herokuapp.com/";
+const MINIQURL = "https://swipemini.herokuapp.com/miniq";
+const T9URL = "https://swipemini.herokuapp.com/t9";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -137,10 +138,10 @@ export default class App extends React.Component {
           const duration = currT - startT;
           if (duration >= THRESH) {
             // console.log(`${currB}: ${currT} - ${startT}`);
-            sanitized.push(currB);
-            startT = currT
-            bCode = currB;
+            sanitized.push(bCode);
           }
+          startT = currT;
+          bCode = currB;
         }
       });
       
@@ -148,6 +149,9 @@ export default class App extends React.Component {
       const sLen= sanitized.length;
       if (sanitized[sLen - 1] !== coords[dataLen - 1][0]) {
         sanitized.push(coords[dataLen - 1][0]);    // always include first and last block Code, if appropriate
+      }
+      if (sLen > 1 && sanitized[0] === sanitized[1]) {
+        sanitized.shift();
       }
 
       console.log(sanitized);
@@ -158,7 +162,7 @@ export default class App extends React.Component {
   };
 
   getWordsFromFlask(arr) {
-    return fetch(FLASKURL, {
+    return fetch(MINIQURL, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', 
