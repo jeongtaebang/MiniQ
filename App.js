@@ -17,9 +17,12 @@ import {
 } from 'react-native';
 
 const blocks = [
-  { key: 'QWE' }, { key: 'RTYU' }, { key: 'IOP' }, 
-  { key: 'AS' }, { key: 'DFGH' }, { key: 'JKL' }, 
-  { key: 'ZXC' }, { key: 'VB' }, { key: 'NM' },
+  // { key: 'QWE' }, { key: 'RTYU' }, { key: 'IOP' }, 
+  // { key: 'AS' }, { key: 'DFGH' }, { key: 'JKL' }, 
+  // { key: 'ZXC' }, { key: 'VB' }, { key: 'NM' },
+  { key: '' }, { key: 'ABC' }, { key: 'DEF' }, 
+  { key: 'GHI' }, { key: 'JKL' }, { key: 'MNO' }, 
+  { key: 'PQRS' }, { key: 'TUV' }, { key: 'WXYZ' },
 ]
 
 /* constants */
@@ -29,8 +32,8 @@ const spaceH = 50;
 const THRESH = 500;
 const h = Dimensions.get('window').width / 2 / numCol;
 var coords = [];
-const MINIQURL = "https://swipemini.herokuapp.com/miniq";
-const T9URL = "https://swipemini.herokuapp.com/t9";
+const MINIQURL = "https://miniq.azurewebsites.net/miniq";
+const T9URL = "https://miniq.azurewebsites.net/t9";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -162,7 +165,7 @@ export default class App extends React.Component {
   };
 
   getWordsFromFlask(arr) {
-    return fetch(MINIQURL, {
+    return fetch(T9URL, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', 
